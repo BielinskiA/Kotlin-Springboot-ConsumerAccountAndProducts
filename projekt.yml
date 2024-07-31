@@ -1,0 +1,406 @@
+openapi: 3.0.3
+info:
+  title: Swagger Petstore - OpenAPI 3.0
+  version: 1.0.11
+servers:
+  - url: http://localhost:8080/
+tags:
+  - name: admins
+    description: Everything about admins
+  - name: products
+    description: Everything about products
+  - name: config_server
+    description: Config server
+paths:
+  /admins:
+    get:
+      tags:
+        - admins
+      summary: Get Admin
+      description: Get all or a chosen admin
+      operationId: getAdmin
+      parameters:
+        - name: id
+          in: query
+          description: Get Admin by ID
+          required: false
+          schema:
+            type: integer
+            
+        - name: name
+          in: query
+          description: Get Admin by name
+          required: false
+          schema:
+            type: string
+            
+        - name: surname
+          in: query
+          description: Get Admin by surname
+          required: false
+          schema:
+            type: string
+            
+        - name: email
+          in: query
+          description: Get Admin by email
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Udało się
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admins'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Admins'
+        '400':
+          description: Nie udało się
+      security:
+        - petstore_auth:
+            - write:admin
+            - read:admin
+    post:
+      tags:
+        - admins
+      summary: Add a new admin
+      description: Add a admin
+      operationId: addAdmin
+      requestBody:
+        description: Create a new admin
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAdmin'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewAdmin'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewAdmin'
+        required: true
+      responses:
+        '200':
+          description: Udało się
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admins'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Admins'
+        '400':
+          description: Nie udało się
+        '422':
+          description: Nie udało się
+      security:
+        - petstore_auth:
+            - write:admin
+            - read:admin
+    delete:
+      tags:
+        - admins
+      summary: Delete an admin
+      description: delete a admin
+      operationId: deleteAdmin
+      parameters:
+        - name: id
+          in: query
+          description: "Delete admin by id"
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid pet value
+      security:
+        - petstore_auth:
+            - write:admin
+            - read:admin
+  /products:
+    get:
+      tags:
+        - products
+      summary: Get products
+      description: Get products
+      operationId: getProducts
+      parameters:
+        - name: id
+          in: query
+          description: get products by ID
+          required: false
+          schema:
+            type: integer
+            
+        - name: name
+          in: query
+          description: get products by Name
+          required: false
+          schema:
+            type: string
+            
+        - name: code
+          in: query
+          description: get products by Code
+          required: false
+          schema:
+            type: string
+            
+        - name: ean
+          in: query
+          description: get products by EAN
+          required: false
+          schema:
+            type: string
+            
+      responses:
+        '200':
+          description: Udało się
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Products'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Products'
+        '400':
+          description: Nie udało się
+      security:
+        - petstore_auth:
+            - write:products
+            - read:products
+            
+    post:
+      tags:
+        - products
+      summary: Add a new product
+      description: Add a new product
+      operationId: addProduct
+      requestBody:
+        description: Create a new product
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewProduct'
+        required: true
+      responses:
+        '200':
+          description: Udało się
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Products'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Products'
+        '400':
+          description: Nie udało się
+        '422':
+          description: Nie udało się
+      security:
+        - petstore_auth:
+            - write:products
+            - read:products
+    delete:
+      tags:
+        - products
+      summary: Delete a product
+      description: delete a product
+      operationId: deleteProduct
+      parameters:
+        - name: id
+          in: query
+          description: "Delete product by id"
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '400':
+          description: Invalid pet value
+      security:
+        - petstore_auth:
+            - write:products
+            - read:products
+  /login:
+    post:
+      tags:
+        - login
+      summary: Login
+      operationId: login
+      requestBody:
+        description: Login
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          description: Udało się
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Admins'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Admins'
+        '400':
+          description: Nie udało się
+        '422':
+          description: Nie udało się
+      security:
+        - petstore_auth:
+            - write:products
+            - read:products
+  
+components:
+  schemas:
+    Admins:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        surname:
+          type: string
+        password: 
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+        created:
+          type: string
+      xml: 
+        name: Admins
+        
+    NewAdmin:
+      type: object
+      properties:
+        name:
+          type: string
+        surname:
+          type: string
+        password: 
+          type: string
+        email:
+          type: string
+        phone_number:
+          type: string
+      xml:
+        name: NewAdmin
+        
+    Products:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        code:
+          type: string
+        ean:
+          type: string
+        taxes:
+          type: string
+        netto:
+          type: string
+      xml: 
+        name: Products
+        
+    NewProduct:
+      type: object
+      properties:
+        name:
+          type: string
+        code:
+          type: string
+        ean:
+          type: string
+        taxes:
+          type: string
+        netto:
+          type: string
+      xml: 
+        name: NewProduct
+        
+    Login:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+      xml:
+        name: Login
+        
+    ConfigServer:
+      type: object
+      properties:
+        id:
+          type: integer
+        key:
+          type: string
+        values:
+          type: string
+        created:
+          type: string
+      xml:
+        name: ConfigServer
+  requestBodies:
+    Admins:
+      description: Admins
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Admins'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Admins'
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
